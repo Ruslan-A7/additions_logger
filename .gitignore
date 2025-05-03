@@ -27,6 +27,7 @@ system/config/
 
 # Всі файли пакета
 !src/
+!src/Logs
 
 # Всі зразки
 !*/example/
