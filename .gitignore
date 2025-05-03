@@ -1,0 +1,36 @@
+# Тимчасові файли та директорії
+composer.lock
+vendor/
+*.temp
+*.tmp
+temp/
+public/temp/
+logs/
+log.*
+*.log
+sessions/
+sess_*
+
+# Реальні конфігураційні файли та директорії
+.htaccess
+config/
+system/config/
+
+# Файли сторонніх програм середовища розробки
+*.code-workspace
+.vscode/
+.osp/
+
+###########
+# ВИНЯТКИ #
+###########
+
+# Всі файли пакета
+!src/
+
+# Всі зразки
+!*/example/
+!*example.php
+!example*.php
+!config/**/*example.php
+!config/**/example*.php
