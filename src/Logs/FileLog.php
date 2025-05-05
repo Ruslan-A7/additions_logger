@@ -97,8 +97,7 @@ class FileLog extends LogAbstract implements FileLogInterface {
     }
 
     protected function autoRecordingOfTheEnding(): void {
-        $this->data[0] = "\n";
-        $this->data[1] =
+        $this->data[array_key_last($this->data)+1] =
             "[{$this->options->initiator->name}][{$this->options->type->name}][" .
             new DateTime(timezone: new DateTimeZone('Europe/Kyiv'))->format('Y-m-d H:i:s.u') . '] >> LOGGING END >>';
     }
