@@ -5,6 +5,7 @@ namespace RA7\Framework\Additions\Logger\Logs;
 use DateTime;
 use DateTimeZone;
 use Exception;
+use RA7\Framework\Additions\Logger\Logger;
 
 /**
  * Файловий журнал реєстратора.
@@ -92,13 +93,13 @@ class FileLog extends LogAbstract implements FileLogInterface {
     protected function autoRecordingOfTheStart(): void {
         $this->data[0] = "\n";
         $this->data[1] =
-            "[{$this->options->initiator->name}][{$this->options->type->name}][" .
+            '[#' . Logger::instance()->getNewId() . "][{$this->options->initiator->name}][{$this->options->type->name}][" .
             new DateTime(timezone: new DateTimeZone('Europe/Kyiv'))->format('Y-m-d H:i:s.u') . '] >> LOGGING START >>';
     }
 
     protected function autoRecordingOfTheEnding(): void {
         $this->data[array_key_last($this->data)+1] =
-            "[{$this->options->initiator->name}][{$this->options->type->name}][" .
+            '[#' . Logger::instance()->getNewId() . "][{$this->options->initiator->name}][{$this->options->type->name}][" .
             new DateTime(timezone: new DateTimeZone('Europe/Kyiv'))->format('Y-m-d H:i:s.u') . '] >> LOGGING END >>';
     }
 
