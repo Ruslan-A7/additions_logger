@@ -31,16 +31,21 @@ class LogOptions {
         get => $this->createLogIfNotFound;
     }
 
-    /** Необхідність автоматичного запису в журнал при його ініціалізації */
-    public protected(set) bool $autoLoggingInitialization {
-        get => $this->autoLoggingInitialization;
-    }
-
     /** Необхідність автоматичного збереження журналу при завершенні роботи (ігнорується якщо в журнал нічого не додавалось) */
     public protected(set) bool $autoSaveOnDestructionRequired {
         get => $this->autoSaveOnDestructionRequired;
     }
 
+
+    /** Необхідність автоматичного запису в журнал при його ініціалізації */
+    public protected(set) bool $autoRecordingOfTheStart {
+        get => $this->autoRecordingOfTheStart;
+    }
+
+    /** Необхідність автоматичного запису в журнал при завершенні його роботи */
+    public protected(set) bool $autoRecordingOfTheEnding {
+        get => $this->autoRecordingOfTheEnding;
+    }
 
 
     /**
@@ -49,22 +54,25 @@ class LogOptions {
      * @param InitiatorsEnum $initiator ініціатор запису в журнал за замовчуванням
      * @param RecordTypesEnum $type тип запису в журналі за замовчуванням
      * @param bool $createLogIfNotFound необхідність автоматичного створення журналу якщо його не знайдено
-     * @param bool $autoLoggingInitialization необхідність автоматичного запису в журнал при його ініціалізації
      * @param bool $autoSaveOnDestructionRequired необхідність автоматичного збереження журналу при завершенні роботи
      * (буде ігноруватись якщо в журнал нічого не додавалось)
+     * @param bool $autoRecordingOfTheStart необхідність автоматичного запису в журнал при його ініціалізації
+     * @param bool $autoRecordingOfTheEnding необхідність автоматичного запису в журнал при завершенні його роботи
      */
     public function __construct(
         InitiatorsEnum $initiator = InitiatorsEnum::App,
         RecordTypesEnum $type = RecordTypesEnum::Info,
         bool $createLogIfNotFound = true,
-        bool $autoLoggingInitialization = false,
-        bool $autoSaveOnDestructionRequired = true) {
+        bool $autoSaveOnDestructionRequired = true,
+        bool $autoRecordingOfTheStart = false,
+        bool $autoRecordingOfTheEnding = false) {
 
         $this->initiator = $initiator;
         $this->type = $type;
         $this->createLogIfNotFound = $createLogIfNotFound;
-        $this->autoLoggingInitialization = $autoLoggingInitialization;
         $this->autoSaveOnDestructionRequired = $autoSaveOnDestructionRequired;
+        $this->autoRecordingOfTheStart = $autoRecordingOfTheStart;
+        $this->autoRecordingOfTheEnding = $autoRecordingOfTheEnding;
     }
 
     /**

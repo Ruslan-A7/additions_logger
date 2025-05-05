@@ -26,6 +26,9 @@ class Logger implements LoggerInterface {
      */
     public protected(set) array $logs = [];
 
+    /** Ідентифікатор (порядковий номер) останнього запису реєстратора (рахує всі записи в усі журнали) в межах поточного запиту */
+    public protected(set) int $lastId = 0;
+
 
 
     private function __construct() {
@@ -33,6 +36,10 @@ class Logger implements LoggerInterface {
     }
 
 
+
+    public function getNewId(): int {
+        return $this->lastId++;
+    }
 
     public function addLog(string $id, LogInterface $log): void {
         $this->logs[$id] = $log;

@@ -3,6 +3,7 @@
 namespace RA7\Framework\Additions\Logger\Logs;
 
 use RA7\Framework\System\Enums\InitiatorsEnum;
+use RA7\Framework\Additions\Logger\Logger;
 
 /**
  * Абстрактний журналу реєстратора.
@@ -14,6 +15,11 @@ use RA7\Framework\System\Enums\InitiatorsEnum;
  */
 abstract class LogAbstract implements LogInterface {
 
+    /** Статус завантаження цього журналу */
+    public protected(set) bool $loaded = false {
+        get => $this->loaded;
+    }
+
     /** Опції журналу */
     public protected(set) LogOptions $options {
         get => $this->options;
@@ -21,6 +27,9 @@ abstract class LogAbstract implements LogInterface {
 
     /** Дані для запису лише в цей журнал */
     protected array $data = [];
+
+    /** Масив збережених записів журналу */
+    protected array $savedData = [];
 
 
 
@@ -31,17 +40,20 @@ abstract class LogAbstract implements LogInterface {
      */
     public function __construct(LogOptions $options = new LogOptions()) {
         $this->options = $options;
-        !$this->options->autoLoggingInitialization ? /* skip */ : $this->autoLoggingInitialization();
+        !$this->options->createLogIfNotFound ? /* skip */ : $this->createLog();
+        !$this->options->autoRecordingOfTheStart ? /* skip */ : $this->autoRecordingOfTheStart();
     }
 
     /**
      * Видалити об'єкт журналу (не видаляє сам журнал, а лише завершує його роботу).
      * ВАЖЛИВО! При видаленні автоматично зберігає журнал якщо в нього попали якісь дані,
      * а в опціях визначено необхідність автоматичного збереження журналу при завершенні роботи!
+     * Також додається автоматичний запис про завершення якщо в опціях autoRecordingOfTheEnding = true.
      */
     public function __destruct() {
+        !$this->options->autoRecordingOfTheEnding ? /* skip */ : $this->autoRecordingOfTheEnding();
         if ($this->options->autoSaveOnDestructionRequired) {
-            empty($this->data) ? /* skip */ : $this->save();
+            empty($this->data) ? /* skip */ : $this->saveAll();
         }
     }
 
@@ -52,13 +64,26 @@ abstract class LogAbstract implements LogInterface {
     }
 
     public function add(string $message = '', ?InitiatorsEnum $initiator = null, ?RecordTypesEnum $type = null): void {
-        if (empty($message) || $message === "\n") {
-            $this->data[array_key_last($this->data)+1] = '';
+        if (empty($message) || $message === "\n" || $message === '\n') {
+            $message = '';
         } else {
-            $type ?? $type = $this->options->type;
-            $initiator ?? $initiator = $this->options->initiator;
-            $this->data[array_key_last($this->data)+1] = "[{$initiator->name}][{$type->name}] >> $message";
+            $type = $type ? $type->name : $this->options->type->name;
+            $initiator = $initiator ? $initiator->name : $this->options->initiator->name;
+            $message = '[#' . Logger::instance()->getNewId() . "][{$initiator}][{$type}] >> $message";
         }
+        $this->data[array_key_last($this->data)+1] = $message;
+    }
+
+    public function addWithSaving(string $message = '', ?InitiatorsEnum $initiator = null, ?RecordTypesEnum $type = null): bool {
+        if (empty($message) || $message === "\n" || $message === '\n') {
+            $message = '';
+        } else {
+            $type = $type ? $type->name : $this->options->type->name;
+            $initiator = $initiator ? $initiator->name : $this->options->initiator->name;
+            $message = '[#' . Logger::instance()->getNewId() . "][{$initiator}][{$type}] >> $message";
+        }
+        $this->savedData[array_key_last($this->savedData)+1] = $message;
+        return $this->saveOne($message);
     }
 
     /**
@@ -69,6 +94,9 @@ abstract class LogAbstract implements LogInterface {
     protected abstract function createLog(): bool;
 
     /** Додати автоматичний запис в журнал при його ініціалізації */
-    protected abstract function autoLoggingInitialization(): void;
+    protected abstract function autoRecordingOfTheStart(): void;
+
+    /** Додати автоматичний запис в журнал при завершенні його роботи */
+    protected abstract function autoRecordingOfTheEnding(): void;
 
 }

@@ -21,7 +21,13 @@ interface LoggerInterface extends SingletonInterface {
      */
     public array $logs {get;}
 
+    /** Ідентифікатор (порядковий номер) останнього запису реєстратора (рахує всі записи в усі журнали) в межах поточного запиту */
+    public int $lastId {get;}
 
+
+
+    /** Отримати новий ідентифікатор (порядковий номер) запису в журналі цього реєстратора */
+    public function getNewId(): int;
 
     /** Додати новий журнал логувальника */
     public function addLog(string $name, LogInterface $log): void;
