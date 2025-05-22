@@ -33,7 +33,6 @@
         "php": "^8.4",
         "ra7/structure_singleton": "*",
         "ra7/utils_system": "*",
-        "ra7/utils_path-normalize": "*",
         "ra7/utils_filesystem": "*",
         "ra7/system_enums": "*"
     }
