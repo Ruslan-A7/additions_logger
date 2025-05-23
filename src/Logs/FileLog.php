@@ -4,7 +4,7 @@ namespace RA7\Framework\Additions\Logger\Logs;
 
 use DateTime;
 use DateTimeZone;
-use Exception;
+use RA7\Framework\Additions\Logger\LoggerErrorException;
 use RA7\Framework\Additions\Logger\Logger;
 
 /**
@@ -39,7 +39,7 @@ class FileLog extends LogAbstract implements FileLogInterface {
         parent::__construct($options);
 
         if (!file_exists($this->path)) {
-            throw new Exception('Файл журналу "' . $this->path . '" не знайдено!
+            throw new LoggerErrorException('Файл журналу "' . $this->path . '" не знайдено!
             Створіть його вручну або перевизначіть значення опції createLogIfNotFound на true для його автоматичного створення.');
         }
     }

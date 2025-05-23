@@ -3,7 +3,7 @@
 namespace RA7\Framework\Additions\Logger\Logs;
 
 use RA7\Framework\System\Enums\InitiatorsEnum;
-use Exception;
+use RA7\Framework\Additions\Logger\LoggerErrorException;
 
 /**
  * Опції журналу реєстратора.
@@ -83,7 +83,7 @@ class LogOptions {
         if (property_exists($this, $propName)) {
             $this->$propName = $value;
         } else {
-            throw new Exception('Опції журналу не мають властивості: ' . $propName);
+            throw new LoggerErrorException('Опції журналу не мають властивості: ' . $propName);
         }
     }
 
