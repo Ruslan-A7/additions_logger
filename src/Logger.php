@@ -45,6 +45,20 @@ class Logger implements LoggerInterface {
         $this->logs[$id] = $log;
     }
 
+    public function saveAll(): bool {
+        if (empty($this->logs)) {
+            return false;
+        }
+        foreach ($this->logs as $id => $log) {
+            if ($log->saveAll()) {
+                continue;
+            } else {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public function deleteLog(string $id): void {
         unset($this->logs[$id]);
     }

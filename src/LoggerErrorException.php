@@ -18,7 +18,7 @@ use RA7\Framework\System\Exception\ExceptionTypesEnum;
  * @license RA7 Open Free License
  * @github <https://github.com/Ruslan-A7>
  */
-class LoggerErrorException extends Exception{
+class LoggerErrorException extends Exception {
 
     /**
      * Створити помилку конфігурації.
@@ -28,7 +28,7 @@ class LoggerErrorException extends Exception{
      * @param null|Throwable $previous попередній виняток (використовується для відстеження ланцюжків винятків)
      */
     public function __construct(string $message, int $code = 0, ?Throwable $previous = null) {
-        $this->fullMessage = new ExceptionMessage('Logger Error', $message);
+        $this->fullMessage = new ExceptionMessage('Logger Error: ', $message);
         $this->details = new ExceptionDetails(InitiatorsEnum::Logger, ExceptionTypesEnum::Error);
 
         parent::__construct($this->fullMessage, $this->details, $code, $previous);

@@ -32,6 +32,14 @@ interface LoggerInterface extends SingletonInterface {
     /** Додати новий журнал логувальника */
     public function addLog(string $name, LogInterface $log): void;
 
+    /**
+     *  Зберегти всі записи в усіх журналах.
+     *
+     * @return true якщо було додано хоча б один журнал і всі вони змогли зберегти свої записи
+     * @return false якщо жоден журнал не було додано або один з них не зміг зберегти свої записи
+     */
+    public function saveAll(): bool;
+
     /** Видалити журнал логувальника */
     public function deleteLog(string $name): void;
 
