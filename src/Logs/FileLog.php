@@ -11,6 +11,8 @@ use RA7\Framework\System\Config\Sources\InCode\ArrayConfigSource;
 
 /**
  * Файловий журнал реєстратора.
+ * 
+ * !Важливо! Цей клас використовує Config::instance() для глобального доступу до налаштувань та Logger::instance() для отримання id попереднього запису Реєстратора. 
  *
  * @author Ruslan_A7 (RA7) <https://ra7.iuid.cc>
  * Код може містити деякі частини, що були створені за допомогою ChatGPT.
