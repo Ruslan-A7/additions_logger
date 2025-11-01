@@ -7,6 +7,7 @@ use DateTimeZone;
 use RA7\Framework\Additions\Logger\LoggerErrorException;
 use RA7\Framework\Additions\Logger\Logger;
 use RA7\Framework\System\Config\Config;
+use RA7\Framework\System\Config\Sources\InCode\ArrayConfigSource;
 
 /**
  * Файловий журнал реєстратора.
@@ -36,6 +37,13 @@ class FileLog extends LogAbstract implements FileLogInterface {
      */
     public function __construct(string $path, LogOptions $options = new LogOptions()) {
         $this->path = $path;
+
+        if (!Config::instance()->getSource('datetime')) {
+            Config::instance()->addSource('datetime', new ArrayConfigSource(
+                pathNormalize(__DIR__ . '/../../../../../system/configs/framework/arrays/datetime.php')
+            ));
+            Config::instance()->getSource('datetime')->load();
+        }
 
         parent::__construct($options);
 
