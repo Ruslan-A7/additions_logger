@@ -21,6 +21,9 @@ system/config/
 .vscode/
 .osp/
 
+# Незавершені файли
+src/helper.php
+
 ###########
 # ВИНЯТКИ #
 ###########
