@@ -6,6 +6,7 @@ use DateTime;
 use DateTimeZone;
 use RA7\Framework\Additions\Logger\LoggerErrorException;
 use RA7\Framework\Additions\Logger\Logger;
+use RA7\Framework\System\Config\Config;
 
 /**
  * Файловий журнал реєстратора.
@@ -67,11 +68,9 @@ class FileLog extends LogAbstract implements FileLogInterface {
 
 
     public function saveAll(): bool {
-        createEmptyDirsToFile($this->path);
         return file_put_contents($this->path, implode("\n", $this->data), FILE_APPEND) !== false;
     }
     public function saveOne(string $message): bool {
-        createEmptyDirsToFile($this->path);
         return file_put_contents($this->path, "\n" . $message, FILE_APPEND) !== false;
     }
 
@@ -94,13 +93,13 @@ class FileLog extends LogAbstract implements FileLogInterface {
         $this->data[0] = "\n";
         $this->data[1] =
             '[#' . Logger::instance()->getNewId() . "][{$this->options->initiator->name}][{$this->options->type->name}][" .
-            new DateTime(timezone: new DateTimeZone('Europe/Kyiv'))->format('Y-m-d H:i:s.u') . '] >> LOGGING START >>';
+            new DateTime(timezone: new DateTimeZone(Config::instance()->get('datetime', 'TimeZone')))->format('Y-m-d H:i:s.u') . '] >> LOGGING START >>';
     }
 
     protected function autoRecordingOfTheEnding(): void {
         $this->data[array_key_last($this->data)+1] =
             '[#' . Logger::instance()->getNewId() . "][{$this->options->initiator->name}][{$this->options->type->name}][" .
-            new DateTime(timezone: new DateTimeZone('Europe/Kyiv'))->format('Y-m-d H:i:s.u') . '] >> LOGGING END >>';
+            new DateTime(timezone: new DateTimeZone(Config::instance()->get('datetime', 'TimeZone')))->format('Y-m-d H:i:s.u') . '] >> LOGGING END >>';
     }
 
 }
