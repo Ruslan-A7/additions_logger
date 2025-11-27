@@ -54,10 +54,20 @@ interface LogInterface {
      */
     public function addWithSaving(string $message = '', ?InitiatorsEnum $initiator = null, ?RecordTypesEnum $type = null): bool;
 
-    /** Зберегти всі записи в журнал */
+    /**
+     * Зберегти всі записи в журнал.
+     *
+     * @return true якщо збереження було успішним
+     * @return false якщо не вийшло зберегти або в конфігурації константа LOGGING_SYSTEM = 0 (логування вимкнено)
+     */
     public function saveAll(): bool;
 
-    /** Зберегти один запис в журнал */
+    /**
+     * Зберегти один запис в журнал.
+     *
+     * @return true якщо збереження було успішним
+     * @return false якщо не вийшло зберегти або в конфігурації константа LOGGING_SYSTEM = 0 (логування вимкнено)
+     */
     public function saveOne(string $message): bool;
 
     /** Видалити журнал (всі дані з нього буде втрачено) */
