@@ -78,13 +78,13 @@ class FileLog extends LogAbstract implements FileLogInterface {
 
 
     public function saveAll(): bool {
-        if (Config::instance()->get('logging', 'LOGGING_SYSTEM') == 0) {
+        if (Config::instance()->get('logging', 'LOGGING_SYSTEM', -1) === 0) {
             return false;
         }
         return file_put_contents($this->path, implode("\n", $this->data), FILE_APPEND) !== false;
     }
     public function saveOne(string $message): bool {
-        if (Config::instance()->get('logging', 'LOGGING_SYSTEM') == 0) {
+        if (Config::instance()->get('logging', 'LOGGING_SYSTEM', -1) === 0) {
             return false;
         }
         return file_put_contents($this->path, "\n" . $message, FILE_APPEND) !== false;

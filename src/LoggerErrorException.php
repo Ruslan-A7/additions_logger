@@ -4,7 +4,6 @@ namespace RA7\Framework\Additions\Logger;
 
 use RA7\Framework\System\Exception\Exception;
 use Throwable;
-use RA7\Framework\System\Exception\ExceptionMessage;
 use RA7\Framework\System\Exception\ExceptionDetails;
 use RA7\Framework\System\Enums\InitiatorsEnum;
 use RA7\Framework\System\Exception\ExceptionTypesEnum;
@@ -28,10 +27,9 @@ class LoggerErrorException extends Exception {
      * @param null|Throwable $previous попередній виняток (використовується для відстеження ланцюжків винятків)
      */
     public function __construct(string $message, int $code = 0, ?Throwable $previous = null) {
-        $this->fullMessage = new ExceptionMessage('Logger Error: ', $message);
         $this->details = new ExceptionDetails(InitiatorsEnum::Logger, ExceptionTypesEnum::Error);
 
-        parent::__construct($this->fullMessage, $this->details, $code, $previous);
+        parent::__construct($message, $this->details, $code, $previous);
     }
 
 }
