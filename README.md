@@ -13,4 +13,4 @@ Notes:
 Примітки:
 - Використовується семантичне версіювання згідно https://semver.org/lang/uk.
 
-## License / Ліцензія: [RA7 Open Free License](https://ra7.iuid.cc/license)
+## License / Ліцензія: [RA7 Open Free License](https://ra7.iuid.cc/LICENSE)
