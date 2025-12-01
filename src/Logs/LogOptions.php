@@ -2,7 +2,8 @@
 
 namespace RA7\Framework\Additions\Logger\Logs;
 
-use RA7\Framework\System\Enums\InitiatorsEnum;
+use RA7\Framework\System\Enums\EventInitiatorsEnum;
+use RA7\Framework\System\Enums\TypesEventsEnum;
 use RA7\Framework\Additions\Logger\LoggerErrorException;
 
 /**
@@ -17,12 +18,12 @@ use RA7\Framework\Additions\Logger\LoggerErrorException;
 class LogOptions {
 
     /** Ініціатор запису в журнал за замовчуванням */
-    public protected(set) InitiatorsEnum $initiator {
+    public protected(set) EventInitiatorsEnum $initiator {
         get => $this->initiator;
     }
 
     /** Тип запису в журналі за замовчуванням */
-    public protected(set) RecordTypesEnum $type {
+    public protected(set) TypesEventsEnum $type {
         get => $this->type;
     }
 
@@ -51,8 +52,8 @@ class LogOptions {
     /**
      * Створити журнал реєстратора.
      *
-     * @param InitiatorsEnum $initiator ініціатор запису в журнал за замовчуванням
-     * @param RecordTypesEnum $type тип запису в журналі за замовчуванням
+     * @param EventInitiatorsEnum $initiator ініціатор запису в журнал за замовчуванням
+     * @param TypesEventsEnum $type тип запису в журналі за замовчуванням
      * @param bool $createLogIfNotFound необхідність автоматичного створення журналу якщо його не знайдено
      * @param bool $autoSaveOnDestructionRequired необхідність автоматичного збереження журналу при завершенні роботи
      * (буде ігноруватись якщо в журнал нічого не додавалось)
@@ -60,8 +61,8 @@ class LogOptions {
      * @param bool $autoRecordingOfTheEnding необхідність автоматичного запису в журнал при завершенні його роботи
      */
     public function __construct(
-        InitiatorsEnum $initiator = InitiatorsEnum::App,
-        RecordTypesEnum $type = RecordTypesEnum::Info,
+        EventInitiatorsEnum $initiator = EventInitiatorsEnum::App,
+        TypesEventsEnum $type = TypesEventsEnum::Info,
         bool $createLogIfNotFound = true,
         bool $autoSaveOnDestructionRequired = true,
         bool $autoRecordingOfTheStart = false,

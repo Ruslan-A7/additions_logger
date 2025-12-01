@@ -2,7 +2,8 @@
 
 namespace RA7\Framework\Additions\Logger\Logs;
 
-use RA7\Framework\System\Enums\InitiatorsEnum;
+use RA7\Framework\System\Enums\EventInitiatorsEnum;
+use RA7\Framework\System\Enums\TypesEventsEnum;
 use RA7\Framework\Additions\Logger\Logger;
 
 /**
@@ -63,7 +64,7 @@ abstract class LogAbstract implements LogInterface {
         return $this->data;
     }
 
-    public function add(string $message = '', ?InitiatorsEnum $initiator = null, ?RecordTypesEnum $type = null): void {
+    public function add(string $message = '', ?EventInitiatorsEnum $initiator = null, ?TypesEventsEnum $type = null): void {
         if (empty($message) || $message === "\n" || $message === '\n') {
             $message = '';
         } else {
@@ -74,7 +75,7 @@ abstract class LogAbstract implements LogInterface {
         $this->data[array_key_last($this->data)+1] = $message;
     }
 
-    public function addWithSaving(string $message = '', ?InitiatorsEnum $initiator = null, ?RecordTypesEnum $type = null): bool {
+    public function addWithSaving(string $message = '', ?EventInitiatorsEnum $initiator = null, ?TypesEventsEnum $type = null): bool {
         if (empty($message) || $message === "\n" || $message === '\n') {
             $message = '';
         } else {

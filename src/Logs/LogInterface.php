@@ -2,7 +2,8 @@
 
 namespace RA7\Framework\Additions\Logger\Logs;
 
-use RA7\Framework\System\Enums\InitiatorsEnum;
+use RA7\Framework\System\Enums\EventInitiatorsEnum;
+use RA7\Framework\System\Enums\TypesEventsEnum;
 
 /**
  * Інтерфейс журналу реєстратора.
@@ -41,7 +42,7 @@ interface LogInterface {
      *
      * Щоб переглянути всі додані записи - скористайтесь методом getAll.
      */
-    public function add(string $message = '', ?InitiatorsEnum $initiator = null, ?RecordTypesEnum $type = null): void;
+    public function add(string $message = '', ?EventInitiatorsEnum $initiator = null, ?TypesEventsEnum $type = null): void;
 
     /**
      * Додати запис в цей журнал з його автоматичним збереженням.
@@ -52,7 +53,7 @@ interface LogInterface {
      * @return true якщо запис вдалося зберегти
      * @return false якщо запис не вдалося зберегти
      */
-    public function addWithSaving(string $message = '', ?InitiatorsEnum $initiator = null, ?RecordTypesEnum $type = null): bool;
+    public function addWithSaving(string $message = '', ?EventInitiatorsEnum $initiator = null, ?TypesEventsEnum $type = null): bool;
 
     /**
      * Зберегти всі записи в журнал.
