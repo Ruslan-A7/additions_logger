@@ -24,6 +24,9 @@ interface LoggerInterface extends SingletonInterface {
     /** Ідентифікатор (порядковий номер) останнього запису реєстратора (рахує всі записи в усі журнали) в межах поточного запиту */
     public int $lastId {get;}
 
+    /** Статус додавання журналу додатка */
+    public bool $addedAppLog {get;}
+
 
 
     /** Отримати новий ідентифікатор (порядковий номер) запису в журналі цього реєстратора */
@@ -45,5 +48,15 @@ interface LoggerInterface extends SingletonInterface {
 
     /** Очистити список журналів логувальника */
     public function clearLogs(): void;
+
+
+
+    /**
+     * Автоматично додати журнал для логування додатку.
+     *
+     * @return true якщо вийшло додати журнал для логування додатку або якщо він вже був доданий раніше
+     * @return false якщо НЕ вийшло додати журнал для логування додатку
+     */
+    public function autoAddAppLog(): bool;
 
 }

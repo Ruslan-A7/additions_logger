@@ -4,6 +4,9 @@ namespace RA7\Framework\Additions\Logger;
 
 use RA7\Framework\Structure\Singleton\SingletonTrait;
 use RA7\Framework\Additions\Logger\Logs\LogInterface;
+use RA7\Framework\Additions\Logger\Logs\FileLog;
+use RA7\Framework\Additions\Logger\Logs\LogOptions;
+use RA7\Framework\System\Enums\EventInitiatorsEnum;
 
 /**
  * Універсальний реєстратор, що може вести різні типи журналів у будь-якій кількості.
@@ -28,6 +31,11 @@ class Logger implements LoggerInterface {
 
     /** Ідентифікатор (порядковий номер) останнього запису реєстратора (рахує всі записи в усі журнали) в межах поточного запиту */
     public protected(set) int $lastId = 0;
+
+    /** Статус додавання журналу додатка */
+    public protected(set) bool $addedAppLog = false {
+        get => $this->addedAppLog;
+    }
 
 
 
@@ -65,6 +73,21 @@ class Logger implements LoggerInterface {
 
     public function clearLogs(): void {
         $this->logs = [];
+    }
+
+
+
+    public function autoAddAppLog(): bool {
+        if (!$this->addedAppLog) {
+            if (!array_key_exists('app', $this->logs)) {
+                $this->addLog('app', new FileLog(
+                    pathNormalize(DIR_TEMP . 'logs/' . date('Y/m/d') . '/app.log'),
+                    new LogOptions(EventInitiatorsEnum::Logger, autoRecordingOfTheStart: true, autoRecordingOfTheEnding: true)
+                ));
+            }
+            $this->addedAppLog = true;
+        }
+        return $this->addedAppLog;
     }
 
 }
