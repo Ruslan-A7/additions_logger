@@ -70,20 +70,23 @@ abstract class LogAbstract implements LogInterface {
         } else {
             $type = $type ? $type->name : $this->options->type->name;
             $initiator = $initiator ? $initiator->name : $this->options->initiator->name;
-            $message = '[#' . Logger::instance()->getNewId() . "][{$initiator}][{$type}] >> $message";
+            $message = '[#' . Logger::instance()->getNewId() . "][{$initiator}][{$type}] :: $message";
         }
         $this->data[array_key_last($this->data)+1] = $message;
     }
 
     public function addWithSaving(string $message = '', ?EventInitiatorsEnum $initiator = null, ?TypesEventsEnum $type = null): bool {
+        //  !!! DEPRECATED !!!
+        //  !!! Використання цього методу може призвести до неправильної та незрозумілої послідовності повідомлень в журналі - краще НЕ ВИКОРИСТОВУВАТИ цей метод !!!
+
         if (empty($message) || $message === "\n" || $message === '\n') {
             $message = '';
         } else {
             $type = $type ? $type->name : $this->options->type->name;
             $initiator = $initiator ? $initiator->name : $this->options->initiator->name;
-            $message = '[#' . Logger::instance()->getNewId() . "][{$initiator}][{$type}] >> $message";
+            $message = '[#' . Logger::instance()->getNewId() . "][{$initiator}][{$type}] :: $message";
         }
-        $this->savedData[array_key_last($this->savedData)+1] = $message;
+        // $this->savedData[array_key_last($this->savedData)+1] = $message;// !!! Перенесено в метод saveOne
         return $this->saveOne($message);
     }
 

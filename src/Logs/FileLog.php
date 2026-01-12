@@ -7,7 +7,6 @@ use DateTimeZone;
 use RA7\Framework\Additions\Logger\LoggerErrorException;
 use RA7\Framework\Additions\Logger\Logger;
 use RA7\Framework\System\Config\Config;
-use RA7\Framework\System\Config\Sources\InCode\ArrayConfigSource;
 
 /**
  * Файловий журнал реєстратора.
@@ -40,12 +39,7 @@ class FileLog extends LogAbstract implements FileLogInterface {
     public function __construct(string $path, LogOptions $options = new LogOptions()) {
         $this->path = $path;
 
-        if (!Config::instance()->getSource('datetime')) {
-            Config::instance()->addSource('datetime', new ArrayConfigSource(
-                pathNormalize(__DIR__ . '/../../../../../system/configs/framework/arrays/datetime.php')
-            ));
-            Config::instance()->getSource('datetime')->load();
-        }
+        Config::instance()->autoloadFrameworkSources();
 
         parent::__construct($options);
 
@@ -81,13 +75,27 @@ class FileLog extends LogAbstract implements FileLogInterface {
         if (Config::instance()->get('logging', 'LOGGING_SYSTEM', -1) === 0) {
             return false;
         }
-        return file_put_contents($this->path, implode("\n", $this->data), FILE_APPEND) !== false;
+
+        $savedResult = file_put_contents($this->path, implode("\n", $this->data), FILE_APPEND) !== false;
+
+        $this->savedData = array_merge($this->savedData, $this->data);
+        $this->data = [];
+
+        return $savedResult;
     }
     public function saveOne(string $message): bool {
+        //  !!! DEPRECATED !!!
+        //  !!! Використання цього методу може призвести до неправильної та незрозумілої послідовності повідомлень в журналі - краще НЕ ВИКОРИСТОВУВАТИ цей метод !!!
+
         if (Config::instance()->get('logging', 'LOGGING_SYSTEM', -1) === 0) {
             return false;
         }
-        return file_put_contents($this->path, "\n" . $message, FILE_APPEND) !== false;
+
+        $savedResult = file_put_contents($this->path, "\n" . $message, FILE_APPEND) !== false;
+
+        $this->savedData[array_key_last($this->savedData)+1] = $message;
+
+        return $savedResult;
     }
 
     public function delete(): bool {
@@ -114,8 +122,8 @@ class FileLog extends LogAbstract implements FileLogInterface {
 
     protected function autoRecordingOfTheEnding(): void {
         $this->data[array_key_last($this->data)+1] =
-            '[#' . Logger::instance()->getNewId() . "][{$this->options->initiator->name}][{$this->options->type->name}][" .
-            new DateTime(timezone: new DateTimeZone(Config::instance()->get('datetime', 'TimeZone')))->format('Y-m-d H:i:s.u') . '] >> LOGGING END >>';
+            "\n" . '[#' . Logger::instance()->getNewId() . "][{$this->options->initiator->name}][{$this->options->type->name}][" .
+            new DateTime(timezone: new DateTimeZone(Config::instance()->get('datetime', 'TimeZone')))->format('Y-m-d H:i:s.u') . '] << LOGGING END <<';
     }
 
 }
